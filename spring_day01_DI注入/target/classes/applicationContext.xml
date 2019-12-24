@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--
+        id:唯一标识
+        class：接口实现类的全类名
+        scope:两个取值
+            prototype：多例
+            singleton：单例，默认
+    -->
+    <!--  <bean id="userService" class="com.jgybzx.service.impl.UserServiceImpl" />-->
+
+
+    <!-- &lt;!&ndash;先创建User对象,构造注入&ndash;&gt;
+     <bean id="user" class="com.jgybzx.domain.User">
+         <constructor-arg name="name" value="asdjkkalsdjlk"/>
+     </bean>
+     &lt;!&ndash;构造注入&ndash;&gt;
+     &lt;!&ndash;
+         <constructor-arg> 配置有参构造
+             index="0" 索引值 构造参数的索引位置
+             type="" 根据类型注入
+             =====================================================
+             name="" 根据名称注入 构造中的形参名称(重要)
+             value= "赋值的数据"(重要)
+             ref="" 引入另一个bean配置 的id(重要)
+     &ndash;&gt;
+     <bean id="userService" class="com.jgybzx.service.impl.UserServiceImpl">
+         &lt;!&ndash;索引的方式  不用，参数位置会变&ndash;&gt;
+         &lt;!&ndash;<constructor-arg index="0" value="将光阴比作夏"/>
+         <constructor-arg index="1" value="12"/>
+         <constructor-arg index="2" ref="user"/>&ndash;&gt;
+         &lt;!&ndash;属性类型的方式  不用&ndash;&gt;
+         &lt;!&ndash;<constructor-arg type="java.lang.String" value="将光阴比作夏"/>
+         <constructor-arg type="java.lang.Integer" value="12"/>
+         <constructor-arg type="com.jgybzx.domain.User" ref="user"/>&ndash;&gt;
+         &lt;!&ndash;有参构造的  形参名字  使用 重要&ndash;&gt;
+         <constructor-arg name="name" value="将光阴比作夏"/>
+         <constructor-arg name="age121212" value="12"/>
+         <constructor-arg name="user" ref="user"/>
+     </bean>-->
+
+    <!--<bean id="user" class="com.jgybzx.domain.User">
+        <property name="name" value="user"/>
+    </bean>
+    &lt;!&ndash;set 基本类型注入&ndash;&gt;
+    <bean id="people" class="com.jgybzx.domain.People">
+        <property name="usernmae" value="将光阴比作夏"/>
+        <property name="age" value="12"/>
+        <property name="address" value="山东"/>
+        <property name="user" ref="user"/>
+     </bean>-->
+
+
+    <!--复杂注入-->
+    <bean id="people" class="com.jgybzx.domain.People">
+
+        <!--数组 list set  -->
+        <property name="myarry">
+            <array><!--<array>或者<list>或者<set>-->
+                <value>1</value>
+                <value>2</value>
+                <value>3</value>
+            </array>
+        </property>
+        <!--list集合-->
+        <property name="mylist">
+            <list>
+                <value>a</value>
+                <value>b</value>
+                <value>c</value>
+            </list>
+        </property>
+        <!--set集合-->
+        <property name="myset">
+            <set>
+                <value>A</value>
+                <value>B</value>
+                <value>C</value>
+            </set>
+        </property>
+        <!--map-->
+        <property name="mymap">
+            <map>
+                <entry key="1" value="a"/>
+                <entry key="2" value="b"/>
+                <entry key="3" value="c"/>
+            </map>
+        </property>
+        <!--properties-->
+        <property name="properties">
+            <props>
+                <prop key="1">as</prop>
+                <prop key="2">a12</prop>
+                <prop key="3">a12</prop>
+            </props>
+        </property>
+    </bean>
+</beans>
