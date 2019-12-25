@@ -14,6 +14,12 @@
             <artifactId>spring-context</artifactId>
             <version>5.0.2.RELEASE</version>
         </dependency>
+        <!--SpringJunit-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>5.0.2.RELEASE</version>
+        </dependency>
 
         <!--dbutils 依赖-->
         <dependency>
