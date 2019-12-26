@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+    <!--配置被代理对象-->
+    <bean id="people" class="com.jgybzx.TargetBean.Peoplempl"/>
+    <!--配置 代理（增强）对象-->
+    <bean class="com.jgybzx.ProxyBean.PeopleProxy" id="peopleProxy"/>
+
+
+    <!--配置切面  =  切点 + 增强-->
+    <aop:config>
+        <!--将可能会重复使用的 切点，提取出来-->
+        <!--全局公共切点配置  -->
+        <aop:pointcut id="全局公共" expression="execution( * com.jgybzx.TargetBean.Peoplempl.*(..))"/>
+        <aop:aspect id="qw" ref="peopleProxy">
+            <!--局部公共切点配置  pointcut-ref-->
+            <aop:pointcut id="局部公共"  expression="execution(* com.jgybzx.TargetBean.Peoplempl.*(..))"/>
+            <!--配置前置通知  以及切点-->
+            <aop:before method="before" pointcut-ref="局部公共"/>
+            <!--配置 后置通知-->
+            <aop:after method="after" pointcut-ref="局部公共"/>
+            <!--配置 异常通知-->
+            <aop:after-throwing method="afterThrowing" pointcut-ref="全局公共"/>
+            <!--配置 最终通知-->
+            <aop:after-returning method="afterReturning" pointcut-ref="局部公共"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
