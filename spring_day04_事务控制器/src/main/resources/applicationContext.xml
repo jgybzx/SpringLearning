@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:sop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+    <context:component-scan base-package="com.jgybzx"/><!--开启注解扫描-->
+    <!--配置service-->
+    <bean id="accountService" class="com.jgybzx.service.impl.AccountServiceImpl">
+        <property name="accountDao" ref="accountDao"/>
+    </bean>
+    <!--配置dao-->
+    <bean id="accountDao" class="com.jgybzx.dao.Impl.AccountDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+    <!--配置jdbcTemplate -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--配置数据源 引入配置文件  dbproperties-->
+    <context:property-placeholder location="classpath*:db.properties"/>
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    <!--=================================================================================-->
+    <!--目标类  Service-->
+    <!--增强类 DataSourceTransactionManager  第三方工具 进行注入-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--既然操作事务，必然需要一个connection-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--开始事务配置-->
+    <tx:advice id="txAdvice">
+        <tx:attributes>
+            <tx:method name="*"/><!--  * 通配符，表示控制所有的方法，都开启事务-->
+        </tx:attributes>
+    </tx:advice>
+    <!--配置切面 切点+增强-->
+    <sop:config>
+        <sop:advisor advice-ref="txAdvice" pointcut="execution(* com.jgybzx.service.*.*(..))"/>
+    </sop:config>
+
+</beans>
