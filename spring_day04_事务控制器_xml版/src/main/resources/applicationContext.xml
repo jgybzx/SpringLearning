@@ -6,7 +6,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 
-    <context:component-scan base-package="com.jgybzx"/><!--开启注解扫描-->
+    <context:component-scan base-package="com.jgybzx"/><!--开启spring注解扫描-->
     <!--配置service-->
     <bean id="accountService" class="com.jgybzx.service.impl.AccountServiceImpl">
         <property name="accountDao" ref="accountDao"/>
@@ -19,7 +19,7 @@
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
         <property name="dataSource" ref="dataSource"/>
     </bean>
-    <!--配置数据源 引入配置文件  dbproperties-->
+    <!--配置数据源 引入配置文件  db.properties-->
     <context:property-placeholder location="classpath*:db.properties"/>
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
         <property name="driverClassName" value="${jdbc.driver}"/>
@@ -35,13 +35,27 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
     <!--开始事务配置-->
-    <tx:advice id="txAdvice">
-        <tx:attributes>
-            <tx:method name="*"/><!--  * 通配符，表示控制所有的方法，都开启事务-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes >
+            <!--
+                控制 方法开启事务，要求 service 的方法取名 必须 特殊
+                    name = find* select* query*  所有关于查询的方法起名 加上前缀
+                    name = *  其他方法
+                    propagation=""  事务传播行为   默认REQUIRED  强制事务
+                    timeout="-1"  超时时间，默认-1 永不超时
+                    read-only ：true 表示只读，建议查询开启
+                    isolation ：事务隔离级别。
+                    rollback-for="" 指定异常回滚  某个特殊异常需要回滚(不配置)
+                    no-rollback-for="" 指定出现某个异常也不回滚  一般不配置   不配置表示任何异常都回滚
+            -->
+            <tx:method name="*" timeout="-1" read-only="false"/><!--  * 通配符，表示控制所有的方法，都开启事务-->
+            <tx:method name="find*" propagation="REQUIRED" isolation="DEFAULT" read-only="true" timeout="-1"/>
+            <tx:method name="select*" propagation="REQUIRED" isolation="DEFAULT" read-only="true" timeout="-1"/>
+            <tx:method name="query*" propagation="REQUIRED" isolation="DEFAULT" read-only="true" timeout="-1"/>
         </tx:attributes>
     </tx:advice>
     <!--配置切面 切点+增强-->
-    <sop:config>
+    <sop:config >
         <sop:advisor advice-ref="txAdvice" pointcut="execution(* com.jgybzx.service.*.*(..))"/>
     </sop:config>
 
