@@ -42,19 +42,19 @@
 
 
 
-<!--    开启事务注解支持之后，以下代码写在 方法 处-->
- <!--开始事务配置-->
+<!--    开启事务注解支持之后，以下代码写在 方法 处
+ &lt;!&ndash;开始事务配置&ndash;&gt;
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes >
-            <tx:method name="*" timeout="-1" read-only="false"/><!--  * 通配符，表示控制所有的方法，都开启事务-->
+            <tx:method name="*" timeout="-1" read-only="false"/>&lt;!&ndash;  * 通配符，表示控制所有的方法，都开启事务&ndash;&gt;
             <tx:method name="find*" propagation="REQUIRED" isolation="DEFAULT" read-only="true" timeout="-1"/>
             <tx:method name="select*" propagation="REQUIRED" isolation="DEFAULT" read-only="true" timeout="-1"/>
             <tx:method name="query*" propagation="REQUIRED" isolation="DEFAULT" read-only="true" timeout="-1"/>
         </tx:attributes>
     </tx:advice>
-    <!--配置切面 切点+增强-->
+    &lt;!&ndash;配置切面 切点+增强&ndash;&gt;
     <sop:config >
         <sop:advisor advice-ref="txAdvice" pointcut="execution(* com.jgybzx.service.*.*(..))"/>
-    </sop:config>
+    </sop:config>-->
 
 </beans>
