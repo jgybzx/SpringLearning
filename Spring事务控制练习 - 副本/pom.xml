@@ -14,7 +14,7 @@
             <artifactId>spring-context</artifactId>
             <version>5.0.2.RELEASE</version>
         </dependency>
-        <!--spring 整合的测试-->
+        <!--spring-test 整合的单元测试-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
@@ -27,13 +27,13 @@
             <version>4.12</version>
         </dependency>
 
-        <!--Spring AOP和事务 织入语言包-->
+        <!--Spring AOP-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
             <version>5.0.2.RELEASE</version>
         </dependency>
-        <!--spring - tx-->
+        <!--spring-tx spring控制事务相关-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
